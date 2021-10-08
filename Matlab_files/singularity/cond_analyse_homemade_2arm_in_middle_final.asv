@@ -110,6 +110,7 @@ AM = [AM;repmat(0,[2,6])];
 AM(5,5) = thet5;
 AM(6,6) = thet6;
 BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4;(C5-v5)'*JG5;(C6-v6)'*JG6];
+%JN=pinv(BMN)*AMN; % Eats your memory
 
 AMNum=matlabFunction(AM); % Converts the expression to function handles
 BMNum=matlabFunction(BM); % Converts the expression to function handles
@@ -133,7 +134,7 @@ L_t6 = norm(theta6_alt);
 unit_vector_t5 = theta5_alt/L_t5;
 unit_vector_t6 = theta6_alt/L_t6;
 
-% We 
+% We put all the equations into the matrices
 AMN=AMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),L_t5,L_t6,x_pwr_on,y_pwr_on,z_pwr_on);
 BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on);
 AMN = vpa(AMN); % This makes AMN behave
@@ -141,17 +142,17 @@ JN=pinv(BMN)*AMN;
 cond(JN)
 
 
-% draw_ragnar_rotated(thetas_pwr_on,base_params_ik_,pose_pwr_on, h_all)
-% 
-% %%
-% hold on
-% 
-% A=[0 v5(1)];
-% B=[0 v5(2)];
-% C=[0 v5(3)];
-% plot3(A,B,C,'k-','LineWidth',3,'color','magenta')
-% 
-% A=[0 v6(1)];
-% B=[0 v6(2)];
-% C=[0 v6(3)];
-% plot3(A,B,C,'k-','LineWidth',3,'color','yellow')
+draw_ragnar_rotated(thetas_pwr_on,base_params_ik_,pose_pwr_on, h_all)
+
+%%
+hold on
+
+A=[0 v5(1)];
+B=[0 v5(2)];
+C=[0 v5(3)];
+plot3(A,B,C,'k-','LineWidth',3,'color','magenta')
+
+A=[0 v6(1)];
+B=[0 v6(2)];
+C=[0 v6(3)];
+plot3(A,B,C,'k-','LineWidth',3,'color','yellow')
