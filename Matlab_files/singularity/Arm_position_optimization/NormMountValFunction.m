@@ -1,5 +1,9 @@
-close all; 
-clear all; 
+function [c]=CondMountValFunction(V)
+v5 = [V(1);V(2);V(3)];
+v6 = [V(4);V(5);V(6)];
+
+%x0 = [0 0.045 -0.02 0 -0.045 -0.02]'
+v5xf=0; v5yf=0.045; v5zf=-0.02; v6xf=0; v6yf=-0.045; v6zf=-0.02;
 geometric_parameters_ragnar; 
 
 Rx = @(angle) ([1 0 0; 0, cos(angle) -sin(angle); 0, sin(angle) cos(angle)]); 
@@ -9,7 +13,8 @@ Rz = @(angle) ([cos(angle) -sin(angle) 0; sin(angle) cos(angle) 0; 0 0 1]);
 ii = [1 0 0]';
 j = [0 1 0]';            
 k = [0 0 1]';
-solutions = [2,1,2,1];
+
+solutions = [2,1,2,1,2];
 u_j = [j j -j -j];
 
 syms thet1 thet2 thet3 thet4 thet5 thet6 real
@@ -95,15 +100,11 @@ JF4=jacobian(B4,[thet1 thet2 thet3 thet4]);
 C4 = [x y z]' + Rx(ph)*h_all(:,4) + r_a;
 JG4=jacobian(C4,[x y z ph]);
 
-syms v5x v5y v5z v6x v6y v6z
+
 
 % Arm 5 and 6
-v5 = [v5x;v5y;v5z];
-v6 = [v6x;v6y;v6z];
 C5 = ((C1+C2)/2);
 C6 = ((C3+C4)/2);
-JG5=jacobian((C5-v5),[x y z ph]);
-JG6=jacobian((C6-v5),[x y z ph]);
 
 %---------------total matrix
 AM=[(B1-C1)'*JF1;(B2-C2)'*JF2;(B3-C3)'*JF3;(B4-C4)'*JF4];
@@ -111,12 +112,8 @@ AM = [AM,repmat(0,[4,2])];
 AM = [AM;repmat(0,[2,6])];
 AM(5,5) = thet5;
 AM(6,6) = thet6;
-BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4;(C5-v5)'*JG5;(C6-v6)'*JG6];
 
 AMNum=matlabFunction(AM); % Converts the expression to function handles
-BMNum=matlabFunction(BM); % Converts the expression to function handles
-
-
 
 % We now define a position that the robot is currently sitting in (its pose)
 x_pwr_on = 0.0; y_pwr_on = 0.5; z_pwr_on = -0.4; phi_pwr_on = deg2rad(90);
@@ -127,13 +124,8 @@ pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 % the robot and recieve the motor angles.
 [thetas_pwr_on, ~] = Rag_fullIKP_rotate_x_ragnar(base_params_ik_, pose_pwr_on, h_all);
 
-% We put all the equations into the matrices
-AMN=AMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),thet5,thet6,x_pwr_on,y_pwr_on,z_pwr_on);
-BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),v5x,v6x,v5y,v6y,v5z,v6z,x_pwr_on,y_pwr_on,z_pwr_on);
-AMN = vpa(AMN); % This makes AMN behave
-assume(BMN,'real');
-KOMNU = pinv(BMN);
-%%
+JG5=jacobian((C5-v5),[x y z ph]);
+JG6=jacobian((C6-v5),[x y z ph]);
 
 % We do something similar for the two new arms.
 L_c5 = subs(C5,[x y z ph],[x_pwr_on y_pwr_on z_pwr_on phi_pwr_on]);
@@ -142,59 +134,17 @@ theta5_alt = L_c5-v5;
 theta6_alt = L_c6-v6;
 L_t5 = norm(theta5_alt);
 L_t6 = norm(theta6_alt);
-unit_vector_t5 = theta5_alt/L_t5;
-unit_vector_t6 = theta6_alt/L_t6;
 
-%BMNum = vpa(BMNum); % This makes BMN behave
+BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4;(C5-v5)'*JG5;(C6-v6)'*JG6];
+BMNum=matlabFunction(BM); % Converts the expression to function handles
 
 % We put all the equations into the matrices
 AMN=AMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),L_t5,L_t6,x_pwr_on,y_pwr_on,z_pwr_on);
-BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),v5x,v6x,v5y,v6y,v5z,v6z,x_pwr_on,y_pwr_on,z_pwr_on);
 AMN = vpa(AMN); % This makes AMN behave
 
+BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on);
 
-%BMN_inv = BMN'*inv(BMN*BMN')
-%JN=pinv(BMN)*AMN;
-%%
-cvx_begin
-variables v5x v5y v5z v6x v6y v6z
+JN=pinv(BMN)*AMN;
+c = double(norm(JN));
 
-miminize(cond(pinv(BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),v5x,v6x,v5y,v6y,v5z,v6z,x_pwr_on,y_pwr_on,z_pwr_on))*AMN))
-subject to
-    -0.1 <= v5x
-    v5x <= 0.1
-
-    -0.1 <= v5y
-    v5y <= 0.1
-
-    -0.1 <= v5z
-    v5z <= 0
-   
-    -0.1 <= v6x
-    v6x <= 0.1
-
-    -0.1 <= v6y
-    v6y <= 0.1
-
-     -0.1 <= v6z
-    v6z <= 0
-cvx_end
-
-
-
-
-
-% draw_ragnar_rotated(thetas_pwr_on,base_params_ik_,pose_pwr_on, h_all)
-% 
-% %%
-% hold on
-% 
-% A=[0 v5(1)];
-% B=[0 v5(2)];
-% C=[0 v5(3)];
-% plot3(A,B,C,'k-','LineWidth',3,'color','magenta')
-% 
-% A=[0 v6(1)];
-% B=[0 v6(2)];
-% C=[0 v6(3)];
-% plot3(A,B,C,'k-','LineWidth',3,'color','yellow')
+end

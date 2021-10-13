@@ -160,6 +160,7 @@ B=[0 t6(2)];
 C=[0 t6(3)];
 plot3(A,B,C,'k-','LineWidth',3,'color','green')
 
+
 % syms zeta eta real
 % B=Rz(thet1)*ii*0.3;
 % R2=Rz(zeta)*Ry(eta);

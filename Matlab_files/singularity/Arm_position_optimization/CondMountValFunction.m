@@ -1,7 +1,9 @@
-function [c]=CondMountValFunction(v5x,v5y,v5z,v6x,v6y,v6z)
-v5 = [v5x;v5y;v5z];
-v6 = [v6x;v6y;v6z];
+function [c]=CondMountValFunction(V)
+v5 = [V(1);V(2);V(3)];
+v6 = [V(4);V(5);V(6)];
 
+%x0 = [0 0.045 -0.02 0 -0.045 -0.02]'
+v5xf=0; v5yf=0.045; v5zf=-0.02; v6xf=0; v6yf=-0.045; v6zf=-0.02;
 geometric_parameters_ragnar; 
 
 Rx = @(angle) ([1 0 0; 0, cos(angle) -sin(angle); 0, sin(angle) cos(angle)]); 
@@ -11,7 +13,8 @@ Rz = @(angle) ([cos(angle) -sin(angle) 0; sin(angle) cos(angle) 0; 0 0 1]);
 ii = [1 0 0]';
 j = [0 1 0]';            
 k = [0 0 1]';
-solutions = [2,1,2,1];
+
+solutions = [2,1,2,1,2];
 u_j = [j j -j -j];
 
 syms thet1 thet2 thet3 thet4 thet5 thet6 real
@@ -142,6 +145,7 @@ AMN = vpa(AMN); % This makes AMN behave
 BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on);
 
 JN=pinv(BMN)*AMN;
-c = cond(JN);
+
+c = double(cond(JN));
 
 end

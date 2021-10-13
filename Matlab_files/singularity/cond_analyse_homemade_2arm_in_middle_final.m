@@ -1,4 +1,4 @@
-close all; 
+%close all; 
 %clear all; 
 geometric_parameters_ragnar; 
 
@@ -96,8 +96,10 @@ C4 = [x y z]' + Rx(ph)*h_all(:,4) + r_a;
 JG4=jacobian(C4,[x y z ph]);
 
 % Arm 5 and 6
-v5 = [0;0.045;-0.02];
-v6 = [0;-0.045;-0.02];
+%v5 = [0;0.045;-0.02];
+%v6 = [0;-0.045;-0.02];
+v5 = [solution(1);solution(2);solution(3)];
+v6 = [solution(4);solution(5);solution(6)];
 C5 = ((C1+C2)/2);
 C6 = ((C3+C4)/2);
 JG5=jacobian((C5-v5),[x y z ph]);
@@ -141,11 +143,21 @@ AMN = vpa(AMN); % This makes AMN behave
 JN=pinv(BMN)*AMN;
 cond(JN)
 
-
+figure
 draw_ragnar_rotated(thetas_pwr_on,base_params_ik_,pose_pwr_on, h_all)
 
 %%
 hold on
+
+% A=[0 v5(1)];
+% B=[0 v5(2)];
+% C=[0 v5(3)];
+% plot3(A,B,C,'k-','LineWidth',3,'color','magenta')
+% 
+% A=[0 v6(1)];
+% B=[0 v6(2)];
+% C=[0 v6(3)];
+% plot3(A,B,C,'k-','LineWidth',3,'color','yellow')
 
 A=[0 v5(1)];
 B=[0 v5(2)];
@@ -156,3 +168,15 @@ A=[0 v6(1)];
 B=[0 v6(2)];
 C=[0 v6(3)];
 plot3(A,B,C,'k-','LineWidth',3,'color','yellow')
+
+% Your two points
+P1 = v5';
+P2 = (theta5_alt+v5)';
+pts = [P1; P2];
+plot3(pts(:,1), pts(:,2), pts(:,3),'k-','LineWidth',3,'color','blue')
+
+% Your two points
+P1 = v6';
+P2 = (theta6_alt+v6)';
+pts = [P1; P2];
+plot3(pts(:,1), pts(:,2), pts(:,3),'k-','LineWidth',3,'color','red')
