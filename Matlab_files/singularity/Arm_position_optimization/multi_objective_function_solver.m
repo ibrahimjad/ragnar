@@ -1,0 +1,10 @@
+function [x,fval,exitflag,output,population,score] = multi_objective_function_solver(nvars,lb,ub,PopulationSize_Data,MaxGenerations_Data,FunctionTolerence_Data,ConstraintTolerence_Data)
+options = optimoptions('gamultiobj');
+options = optimoptions(options,'PopulationSize', PopulationSize_Data);
+options = optimoptions(options,'MaxGenerations', MaxGenerations_Data);
+options = optimoptions(options,'FunctionTolerance', FunctionTolerence_Data);
+options = optimoptions(options,'ConstraintTolerance', ConstraintTolerence_Data);
+options = optimoptions(options,'CrossoverFcn', { @crossoverintermediate [] });
+options = optimoptions(options,'Display', 'off');
+options = optimoptions(options,'PlotFcn', { @gaplotpareto });
+[x,fval,exitflag,output,population,score] = gamultiobj(@CondMountValFunction_MultiObjective,nvars,[],[],[],[],lb,ub,[],options);

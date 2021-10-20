@@ -1,4 +1,5 @@
-clear all
+3
+3clear all
 close all
 % We now define a position that the robot is currently sitting in (its pose)
 x_pwr_on = 0; y_pwr_on = 0.5; z_pwr_on = -0.4; phi_pwr_on = deg2rad(90);
@@ -45,15 +46,24 @@ up_bound = [0.2 0.2 0 0.2 0.2 0];
 
 % Now we find the solution using the cond number of JN as target function
 % Set nondefault solver options
-options2 = optimoptions('fmincon','MaxFunctionEvaluations',75,'Display','off');
+x0 = [0 0 0 0 0 0]'
+options2 = optimoptions('fminimax','MaxFunctionEvaluations',300,'Display','off');
 % Solve
+[solution,objectiveValue] = fminimax(@CondMountValFunction,x0,[],[],[],[],...
+    low_bound,up_bound,@ineq,options2);
+clearvars options2
+cond_analyse_homemade_2arm_in_middle_final % We plot the optimal arm placement
+disp('(Fig 4)Using cond(JN) FIMIMAX as target function, with better (more realistic) constraints')
+fprintf('Cond(JN) = %f and norm(JN)=%g\n', cond(JN), norm(JN))
+solution
+options2 = optimoptions('fmincon','MaxFunctionEvaluations',500,'Display','off');
 [solution,objectiveValue] = fmincon(@CondMountValFunction,x0,[],[],[],[],...
     low_bound,up_bound,@ineq,options2);
 clearvars options2
 cond_analyse_homemade_2arm_in_middle_final % We plot the optimal arm placement
 disp('(Fig 4)Using cond(JN) as target function, with better (more realistic) constraints')
 fprintf('Cond(JN) = %f and norm(JN)=%g\n', cond(JN), norm(JN))
-
+solution
 % Now we find the solution using the norm of JN as target function
 % Set nondefault solver options
 options = optimoptions('fmincon','MaxFunctionEvaluations',75,'Display','off');
@@ -68,7 +78,7 @@ fprintf('Cond(JN) = %f and norm(JN)=%g\n', cond(JN), norm(JN))
 
 % Based on these results we think that something like this will be the most
 % feasible arm setup:
-solution = [0;-0.096;-0.038;0;-0.15;-0.04];
+solution = [0;-0.11;-0.038;0;-0.15;-0.037];
 cond_analyse_homemade_2arm_in_middle_final
 disp('(Fig 6) The setup we will move forward with (based on fig 4)')
 fprintf('Cond(JN) = %f and norm(JN)=%g\n', cond(JN), norm(JN))
