@@ -1,21 +1,17 @@
 clear all
 close all
-% We now define a position that the robot is currently sitting in (its pose)
-x_pwr_on = 0; y_pwr_on = 0.5; z_pwr_on = -0.4; phi_pwr_on = deg2rad(90);
 
-x0 = [0 0 0 0 0 0]' % We choose an initial point
 low_bound = [-0.2 -0.2 -0.1 -0.2 -0.2 -0.1];
 up_bound = [0.2 0.2 0 0.2 0.2 0];
 
 nvars = 6;
+Aineq = [0 -1 0 0 1 0; 0 0 -1 0 0 1]
+bineq = [-0.05;0]
 lb = low_bound;
 ub = up_bound;
-PopulationSize_Data = 200; 
-MaxGenerations_Data = 50;
-FunctionTolerence_Data = 0;
-ConstraintTolerence_Data = 0;
 
-[x,fval,exitflag,output,population,score] = multi_objective_function_solver(nvars,lb,ub,PopulationSize_Data,MaxGenerations_Data,FunctionTolerence_Data,ConstraintTolerence_Data)
+
+[x,fval,exitflag,output,population,score] = gen_code(nvars,Aineq,bineq,lb,ub)
 
 optimal_solution = x
 
