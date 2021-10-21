@@ -1,33 +1,5 @@
-% <<<<<<< HEAD
-% % cvx_begin
-% % variables v5x v5y v5z v6x v6y v6z
-% % 
-% % miminize(CondMountValFunction(v5x,v5y,v5z,v6x,v6y,v6z))
-% % 
-% % subject to
-% %     -0.1 <= v5x
-% %     v5x <= 0.1
-% % 
-% %     -0.1 <= v5y
-% %     v5y <= 0.1
-% % 
-% %     -0.1 <= v5z
-% %     v5z <= 0
-% %    
-% %     -0.1 <= v6x
-% %     v6x <= 0.1
-% % 
-% %     -0.1 <= v6y
-% %     v6y <= 0.1
-% % 
-% %      -0.1 <= v6z
-% %     v6z <= 0
-% % cvx_end
-% 
-% %CondMountValFunction(1,1,1,1,1,1)
-% =======
 clear all
-objective = @(V) CondMountValFunction(V)
+objective = @(V) [CondMountValFunction(V),CondFunction(V)]
 
 % initial guess
 x0=[0;0.045;-0.02;0;-0.045;-0.02];
@@ -51,7 +23,7 @@ nonlincon = []
 % optimize with fmincon
 %[X,FVAL,EXITFLAG,OUTPUT,LAMBDA,GRAD,HESSIAN]
 % = fmincon(FUN,X0,A,B,Aeq,Beq,LB,UB,NONLCON,OPTIONS)
-x = fmincon(objective,x0,A,b,Aeq,beq,lb,ub,nonlincon);
+x = fminimax(objective,x0,A,b,Aeq,beq,lb,ub,nonlincon);
 
 % show final objective
 disp(['Final Objective: ' num2str(objective(x))])
