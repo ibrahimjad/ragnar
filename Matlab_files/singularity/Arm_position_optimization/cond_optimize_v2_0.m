@@ -1,15 +1,11 @@
 clear all
 close all
 
-low_bound = [-0.2 -0.2 -0.1 -0.2 -0.2 -0.1];
-up_bound = [0.2 0.2 0 0.2 0.2 0];
-
 nvars = 6;
-Aineq = [0 -1 0 0 1 0; 0 0 -1 0 0 1]
-bineq = [-0.05;0]
-lb = low_bound;
-ub = up_bound;
-
+Aineq = [0 -1 0 0 1 0; 0 0 -1 0 0 1];
+bineq = [-0.05;0];
+lb = [-0.2 -0.2 -0.1 -0.2 -0.2 -0.1];
+ub = [0.2 0.2 0 0.2 0.2 0];
 
 [x,fval,exitflag,output,population,score] = gen_code(nvars,Aineq,bineq,lb,ub)
 
