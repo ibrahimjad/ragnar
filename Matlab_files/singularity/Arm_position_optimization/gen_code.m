@@ -6,5 +6,6 @@ options = optimoptions('gamultiobj');
 %% Modify options setting
 options = optimoptions(options,'CrossoverFcn', {  @crossoverintermediate [] });
 options = optimoptions(options,'Display', 'off');
+options = optimoptions(options,'MaxGenerations', 1);
 [x,fval,exitflag,output,population,score] = ...
 gamultiobj(@CondMountValFunction_MultiObjective,nvars,Aineq,bineq,[],[],lb,ub,[],options);
