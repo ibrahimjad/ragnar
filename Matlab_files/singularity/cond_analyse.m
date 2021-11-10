@@ -110,16 +110,16 @@ BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4];
 AMNum=matlabFunction(AM);
 BMNum=matlabFunction(BM);
 %JNum=matlabFunction(J)
-
+ %% Draw ragnar in handoff
 x_pwr_on = 0.0; 
 y_pwr_on = 0.5; 
-z_pwr_on = -0.25; 
+z_pwr_on = -0.4; 
 phi_pwr_on = deg2rad(90);
 
 pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 % get the initial position of thetas at power on
 [thetas_pwr_on, ~] = Rag_fullIKP_rotate_x_ragnar(base_params_ik_, pose_pwr_on, h_all);
-
+thetas_pwr_on_HO = rad2deg(thetas_pwr_on);
 %JN=JNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on)
 %cond(JN)
 
@@ -131,16 +131,38 @@ cond(JN)
 
 draw_ragnar_rotated(thetas_pwr_on,base_params_ik_,pose_pwr_on, h_all)
 
-%%
-syms zeta eta real
-B=Rz(thet1)*ii*0.3;
-R2=Rz(zeta)*Ry(eta);
-C=B+Rz(thet1)*R2*0.6*ii;
-J1=jacobian(C,thet1)
-J2=jacobian(C,zeta)
-J3=jacobian(C,eta)
+%% Draw ragnar in pickup
+x_pwr_on = 0.0; 
+y_pwr_on = 0; 
+z_pwr_on = -0.60; 
+phi_pwr_on = deg2rad(0);
 
-JJ1=cross((Rz(thet1)*k),C);
-JJ2=cross(Rz(thet1)*k,Rz(thet1)*R2*ii*0.6);
-JJ3=cross(Rz(thet1)*Rz(zeta)*j,Rz(thet1)*R2*ii*0.6)
+pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
+% get the initial position of thetas at power on
+[thetas_pwr_on, ~] = Rag_fullIKP_rotate_x_ragnar(base_params_ik_, pose_pwr_on, h_all);
+thetas_pwr_on_PU = rad2deg(thetas_pwr_on);
+%JN=JNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on)
+%cond(JN)
+
+AMN=AMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on);
+BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on);
+JN=inv(BMN)*AMN;
+%cond(JN)
+rotated = [thetas_pwr_on_PU thetas_pwr_on_HO thetas_pwr_on_HO-thetas_pwr_on_PU];
+rotated(4,3) = rotated(4,3)-360
+figure(2)
+draw_ragnar_rotated(thetas_pwr_on,base_params_ik_,pose_pwr_on, h_all)
+
+% %%
+% syms zeta eta real
+% B=Rz(thet1)*ii*0.3;
+% R2=Rz(zeta)*Ry(eta);
+% C=B+Rz(thet1)*R2*0.6*ii;
+% J1=jacobian(C,thet1)
+% J2=jacobian(C,zeta)
+% J3=jacobian(C,eta)
+% 
+% JJ1=cross((Rz(thet1)*k),C);
+% JJ2=cross(Rz(thet1)*k,Rz(thet1)*R2*ii*0.6);
+% JJ3=cross(Rz(thet1)*Rz(zeta)*j,Rz(thet1)*R2*ii*0.6)
 

@@ -96,10 +96,10 @@ C4 = [x y z]' + Rx(ph)*h_all(:,4) + r_a;
 JG4=jacobian(C4,[x y z ph]);
 
 % Arm 5 and 6
-%v5 = [0;0.045;-0.02];
-%v6 = [0;-0.045;-0.02];
-v5 = [solution(1);solution(2);solution(3)];
-v6 = [solution(4);solution(5);solution(6)];
+v5 = [-0.01; 0.0250; -0.01];
+v6 = [-0.01; -0.0250; -0.01];
+%v5 = [solution(1);solution(2);solution(3)];
+%v6 = [solution(4);solution(5);solution(6)];
 C5 = ((C1+C2)/2);
 C6 = ((C3+C4)/2);
 JG5=jacobian((C5-v5),[x y z ph]);
@@ -118,7 +118,7 @@ AMNum=matlabFunction(AM); % Converts the expression to function handles
 BMNum=matlabFunction(BM); % Converts the expression to function handles
 
 % We now define a position that the robot is currently sitting in (its pose)
-%x_pwr_on = 0.0; y_pwr_on = 0.5; z_pwr_on = -0.4; phi_pwr_on = deg2rad(90);
+x_pwr_on = 0.01; y_pwr_on = 0.51; z_pwr_on = -0.41; phi_pwr_on = deg2rad(85);
 pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 
 % get the initial position of thetas at power on

@@ -127,6 +127,8 @@ phi_pwr_on = deg2rad(90);
 
 pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 % get the initial position of thetas at power on
+% This is doing forward kinematics. This means that we input the pose of
+% the robot and recieve the motor angles.
 [thetas_pwr_on, ~] = Rag_fullIKP_rotate_x_ragnar(base_params_ik_, pose_pwr_on, h_all);
 t5 = subs(C5,[x y z ph],[x_pwr_on y_pwr_on z_pwr_on phi_pwr_on])
 t6 = subs(C6,[x y z ph],[x_pwr_on y_pwr_on z_pwr_on phi_pwr_on])
