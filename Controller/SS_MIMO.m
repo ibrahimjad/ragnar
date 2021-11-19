@@ -8,6 +8,8 @@ C = eye(8,8);%zeros(4,8); C(1,1) = 1; C(2,2) = 1; C(3,3) = 1; C(4,4) = 1;
 sys_mimo=ss(A,B,C,0);
 
 %% Disigning feedback and observer gain
+S=-(sqrt(250/1.28));
+
 Xpole = roots([1.28 2*sqrt(251*1.28) 251]);
 Ypole = roots([1.28 2*sqrt(250*1.28) 250]);
 Zpole = roots([1.28 2*sqrt(250*1.28) 250]);
