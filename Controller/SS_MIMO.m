@@ -13,7 +13,7 @@ S=-(sqrt(250/1.28));
 Xpole = roots([1.28 2*sqrt(251*1.28) 251]);
 Ypole = roots([1.28 2*sqrt(250*1.28) 250]);
 Zpole = roots([1.28 2*sqrt(250*1.28) 250]);
-Phipole = roots([1/2180 2*sqrt(251*(1/2180)) 251]);
+Phipole = roots([0.004266666667 2*sqrt(251*0.004266666667) 251]);
 
 Desired_poles = real([Xpole' Zpole' Ypole' Phipole']);
 Desired_poles_obs = 5*Desired_poles;
