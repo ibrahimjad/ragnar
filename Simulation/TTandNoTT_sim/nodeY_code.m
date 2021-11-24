@@ -3,8 +3,7 @@ function [exectime, data] = nodeY_code(seg,data)
 switch seg
     
     case 1
-        exectime = 0.005;
-        
+        exectime = 0.001;
         msg = ttGetMsg;
         
         if (msg.state == TransmissionStatus.Request)
@@ -12,7 +11,7 @@ switch seg
             msg.data(2) = ttAnalogIn(2);
             msg.ActuatorNr = 2;
             msg.state = TransmissionStatus.Send;
-            ttSendMsg(1, msg, 64);     % send msg to Teensy
+            ttSendMsg(1, msg, 80);     % send msg to Teensy
         end
         
         if  (msg.state == TransmissionStatus.Recieve)

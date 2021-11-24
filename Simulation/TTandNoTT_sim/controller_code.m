@@ -1,9 +1,9 @@
 function [exectime, meas] = controller_code(seg,meas)
 
-F_mimo =[ -230.9401         0         0         0  -34.4133         0         0         0
+F_mimo =[ -400.7992         0         0         0  -46.5674         0         0         0
          0 -250.4995         0         0         0  -35.8128         0         0
          0         0 -250.4995         0         0         0  -35.8128         0
-         0         0         0   -0.0828         0         0         0   -0.0123];
+         0         0         0   -0.1436         0         0         0   -0.0167];
 ref = zeros(1,8);
 
 for i=1:8
@@ -13,10 +13,10 @@ end
 switch seg
     case 1 %% We received measurment
         
-        
-        
         msg = ttGetMsg; % sensor data (actuator position)
-        exectime = 0.001;
+        exectime = 0.0000125; % This runs 4 times for each sync frame.
+        % total time to unpack 4 = 50 microsecs, so 12.5 micros for each
+        % moter measurement
         
         if msg.state == TransmissionStatus.Send
             meas(msg.ActuatorNr) = msg.data(1);
@@ -28,7 +28,7 @@ switch seg
             ttSetNextSegment(5)
         end
     case 2
-        exectime = 0.001;
+        exectime = 0.00122; % calculate + send 4 control sig = 1220 millisecs
     case 3
      
         ControllerOut=F_mimo*(meas(1:8)-ref)';
@@ -37,16 +37,16 @@ switch seg
         
         for i = 1:4
             msg.data=ControllerOut(i);
-            ttSendMsg(i+1, msg, 64);
+            ttSendMsg(i+1, msg, 80); 
         end
         
         meas(9) = 0;
-        exectime = 0.0005;
+        exectime = 0;
     case 4
         msg = [];
         msg.state = TransmissionStatus.Sync;
-        ttSendMsg(0, msg, 64);
-        exectime = 0;
+        ttSendMsg(0, msg, 48);
+        exectime = 0.0000025; % Send sync = 2.5 micro
         
     case 5
         exectime = -1;
