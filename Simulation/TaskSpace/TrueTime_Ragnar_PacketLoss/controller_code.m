@@ -21,9 +21,12 @@ switch seg
             ttSetNextSegment(5)
         end
     case 2
+         if (meas(1) == 0 && meas(2) == 0 && meas(3) == 0 && meas(4) == 0 && meas(5) == 0 && meas(6) == 0 && meas(7) == 0 && meas(8) == 0)
+            ttSetNextSegment(4)
+        end
         exectime = 0.01;
     case 3
-     
+        
         ControllerOut=F_mimo*(meas(1:8)-ref)';
         
         msg.state = TransmissionStatus.Recieve;
@@ -33,9 +36,9 @@ switch seg
             ttSendMsg(i+1, msg, 64);
         end
         
-        meas(9) = 0;
         exectime = 0.0005;
     case 4
+        meas(9) = 0;
         msg = [];
         msg.state = TransmissionStatus.Sync;
         ttSendMsg(0, msg, 64);
