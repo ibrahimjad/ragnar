@@ -28,7 +28,7 @@ switch seg
             ttSetNextSegment(5)
         end
     case 2
-        exectime = 0.00122+0.001; % calculate + send 4 control sig = 1220 millisecs
+        exectime = 0.00122; % calculate + send 4 control sig = 1220 millisecs
     case 3
      
         ControllerOut=F_mimo*(meas(1:8)-ref)';
