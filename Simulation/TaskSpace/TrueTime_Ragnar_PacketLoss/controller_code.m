@@ -4,8 +4,12 @@ F_mimo =[-1.4629         0         0         0   -2.7429         0         0    
          0   -3.4482         0         0         0   -4.2057         0         0
          0         0   -3.0563         0         0         0   -4.0229         0
          0         0         0   -0.0013         0         0         0   -0.0016];
-ref = [0.01 0.51 -0.41 deg2rad(85) 0 0 0 0];
 
+     ref = zeros(1,8);
+
+for i=1:8
+    ref(i) = ttAnalogIn(i);
+end
 switch seg
     case 1 %% We received measurment
         msg = ttGetMsg; % sensor data (actuator position)
