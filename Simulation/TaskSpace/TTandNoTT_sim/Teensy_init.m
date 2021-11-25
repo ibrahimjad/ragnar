@@ -1,6 +1,8 @@
 function Teensy_init
 % Initialize TrueTime kernel
 ttInitKernel('prioFP');  % scheduling policy - fixed priority
+global msg123;
+msg123 = [];
 meas([1:9])=0;
 deadline = 10;
 starttime = 0;
