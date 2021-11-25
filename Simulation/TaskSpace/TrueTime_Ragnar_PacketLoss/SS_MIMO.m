@@ -16,30 +16,18 @@ Desired_zeroes = [-3:1/7:-2];
 Desired_poles_obs = [-5:1/7:-4];
 
 %% Disigning feedback and observer gain
-F_mimo=-place(A,B,Desired_poles) % State feedback
+F_mimo=-place(A,B,Desired_poles); % State feedback
 L_mimo=-place(A',C',Desired_poles_obs)'; % Observer
 
-%Ak_mimo = A+B*F_mimo+L_mimo*C;
-%sys_k_mimo=ss(Ak_mimo,L_mimo,-F_mimo,0);
-%CL_mimo = feedback(sys_mimo,sys_k_mimo,1);
-%CLpoles_Mimo=pole(CL_mimo);
-%% Find N and M
-L = L_mimo;
-F = F_mimo;
-Aza = A+B*F+L*C;
-Cza = -F;
+%% ref
+sig1 = [0 0.5 -0.4 deg2rad(90) 0 0 0 0];
+sig2 = [0.01 0.51 -0.38 deg2rad(97) 0 0 0 0];
+sig3 = [0.01 0.51 -0.39 deg2rad(90) 0 0 0 0];
+sig4 = [0.01 0.51 -0.39 deg2rad(95) 0 0 0 0];
+sig5 = [-0.01 0.49 -0.41 deg2rad(85) 0 0 0 0];
+sig6 = [0 0.5 -0.4 deg2rad(90) 0 0 0 0];
 
-M_tilde=-place(Aza',Cza',Desired_zeroes)'
-
-Acl = [A B*F;-L*C Aza]
-B_tilde_cl = [B;M_tilde]
-Ccl = [C zeros(8,8)]
-N = -pinv(Ccl*Acl^-1*B_tilde_cl)
-M = M_tilde*N
-
-Bcl = [B*N;M]
-final_sys = ss(Acl,Bcl,Ccl,0);
-
+ref = [sig1;sig4;sig5;sig6;];
 
   
  

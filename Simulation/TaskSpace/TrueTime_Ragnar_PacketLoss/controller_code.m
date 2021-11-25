@@ -1,11 +1,11 @@
 function [exectime, meas] = controller_code(seg,meas)
 
-F_mimo =[-1.4629         0         0         0   -2.7429         0         0         0
-         0   -3.4482         0         0         0   -4.2057         0         0
-         0         0   -3.0563         0         0         0   -4.0229         0
-         0         0         0   -0.0013         0         0         0   -0.0016];
+F_mimo =[ -400.7992         0         0         0  -46.5674         0         0         0
+         0 -250.4995         0         0         0  -35.8128         0         0
+         0         0 -250.4995         0         0         0  -35.8128         0
+         0         0         0   -0.1436         0         0         0   -0.0167];
 
-     ref = zeros(1,8);
+ref = zeros(1,8);
 
 for i=1:8
     ref(i) = ttAnalogIn(i);
@@ -13,7 +13,7 @@ end
 switch seg
     case 1 %% We received measurment
         msg = ttGetMsg; % sensor data (actuator position)
-        exectime = 0.005;
+        exectime = 0.0000125;
         
         if msg.state == TransmissionStatus.Send
             meas(msg.ActuatorNr) = msg.data(1);
@@ -28,7 +28,7 @@ switch seg
          if (meas(1) == 0 && meas(2) == 0 && meas(3) == 0 && meas(4) == 0 && meas(5) == 0 && meas(6) == 0 && meas(7) == 0 && meas(8) == 0)
             ttSetNextSegment(4)
         end
-        exectime = 0.01;
+        exectime = 0.00122
     case 3
         
         ControllerOut=F_mimo*(meas(1:8)-ref)';
@@ -40,13 +40,13 @@ switch seg
             ttSendMsg(i+1, msg, 64);
         end
         
-        exectime = 0.0005;
+        exectime = 0;
     case 4
         meas(9) = 0;
         msg = [];
         msg.state = TransmissionStatus.Sync;
         ttSendMsg(0, msg, 64);
-        exectime = 0;
+       exectime = 0.0000025;
         
     case 5
         exectime = -1;

@@ -3,8 +3,7 @@ function [exectime, data] = nodePhi_code(seg,data)
 switch seg
     
     case 1
-        exectime = 0.005;
-        
+        exectime = 0.001;
         msg = ttGetMsg;
         
         if (msg.state == TransmissionStatus.Request)

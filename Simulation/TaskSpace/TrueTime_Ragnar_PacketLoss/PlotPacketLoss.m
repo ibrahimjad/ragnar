@@ -1,0 +1,56 @@
+NPx = out.x.Data(:,2);
+NPy = out.y.Data(:,2);
+NPz = out.z.Data(:,2);
+NPphi = out.phi.Data(:,2);
+NPxT = out.x.Time;
+NPyT = out.y.Time;
+NPzT = out.z.Time;
+NPphiT = out.phi.Time;
+
+%%
+
+w = 12; h=4; lw = 1.5; rlw = 1.8;
+
+P1 = plot(NPxT,NPx,'b',out.x.Time,out.x.Data(:,2),'g--',out.x.Time,out.x.Data(:,1),'k:');
+set(P1,'linewidth',lw);
+set(P1(2),'linewidth',rlw);
+ylabel('x [Meters]');
+ylim([-0.011 0.011]);
+y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
+legend('No packet loss','Packet loss','Reference', 'Operating point','Location','southwest');
+set(gcf, 'PaperPosition', [-0.23 0.01 w h]); %Position plot at left hand corner with width and height.
+set(gcf, 'PaperSize', [w-1.23 h-0.25]); %Set the paper to have width and height.
+saveas(gcf, 'resultx', 'pdf'); %Save figure
+
+P2 = plot(NPyT,NPy,'b',out.y.Time,out.y.Data(:,2),'g--',out.y.Time,out.y.Data(:,1),'k:');
+set(P2,'linewidth',lw);
+set(P2(2),'linewidth',rlw);
+ylabel('x [Meters]');
+ylim([0.489 0.511]);
+y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
+set(gcf, 'PaperPosition', [-0.23 0.01 w h]); %Position plot at left hand corner with width and height.
+set(gcf, 'PaperSize', [w-1.23 h-0.25]); %Set the paper to have width and height.
+saveas(gcf, 'resulty', 'pdf'); %Save figure
+
+
+P3 = plot(NPzT,NPz,'b',out.z.Time,out.z.Data(:,2),'g--',out.z.Time,out.z.Data(:,1),'k:');
+set(P3,'linewidth',lw);
+set(P3(2),'linewidth',rlw);
+ylabel('x [Meters]');
+ylim([-0.411 -0.389]);
+y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
+set(gcf, 'PaperPosition', [-0.23 0.01 w h]); %Position plot at left hand corner with width and height.
+set(gcf, 'PaperSize', [w-1.23 h-0.25]); %Set the paper to have width and height.
+saveas(gcf, 'resultz', 'pdf'); %Save figure
+
+P4 = plot(NPphiT,NPphi,'b',out.phi.Time,out.phi.Data(:,2),'g--',out.phi.Time,out.phi.Data(:,1),'k:');
+set(P4,'linewidth',lw);
+set(P4(2),'linewidth',rlw);
+ylabel('x [Meters]');
+ylim([84.5 95.5]);
+y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
+set(gcf, 'PaperPosition', [-0.23 0.01 w h]); %Position plot at left hand corner with width and height.
+set(gcf, 'PaperSize', [w-1.23 h-0.25]); %Set the paper to have width and height.
+saveas(gcf, 'resultphi', 'pdf'); %Save figure
+
+
