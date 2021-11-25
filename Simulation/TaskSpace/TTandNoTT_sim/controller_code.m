@@ -1,9 +1,9 @@
 function [exectime, meas] = controller_code(seg,meas)
 
-F_mimo =[ -400.7992         0         0         0  -46.5674         0         0         0
-         0 -250.4995         0         0         0  -35.8128         0         0
-         0         0 -250.4995         0         0         0  -35.8128         0
-         0         0         0   -0.1436         0         0         0   -0.0167];
+F_mimo =[-2457.0,      0,      0,       0, -193.7,      0,      0,        0
+      0, -250.5,      0,       0,      0, -35.81,      0,        0
+      0,      0, -250.5,       0,      0,      0, -35.81,        0
+      0,      0,      0, -0.8806,      0,      0,      0, -0.06942];
 ref = zeros(1,8);
 
 for i=1:8
@@ -28,7 +28,7 @@ switch seg
             ttSetNextSegment(5)
         end
     case 2
-        exectime = 0.00122; % calculate + send 4 control sig = 1220 millisecs
+        exectime = 0.00122+0.001; % calculate + send 4 control sig = 1220 millisecs
     case 3
      
         ControllerOut=F_mimo*(meas(1:8)-ref)';

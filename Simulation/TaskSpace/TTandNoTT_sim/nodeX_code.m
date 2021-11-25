@@ -3,10 +3,11 @@ function [exectime, data] = nodeX_code(seg,data)
 switch seg
         
     case 1
-        exectime = 0.001;
         msg = ttGetMsg;
+        exectime = 0.000032;
         
         if (msg.state == TransmissionStatus.Request)
+            exectime = 0.001;
             msg.data(1) = ttAnalogIn(1);
             msg.data(2) = ttAnalogIn(2);
             msg.ActuatorNr = 1;
