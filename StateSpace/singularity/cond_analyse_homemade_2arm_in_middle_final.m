@@ -127,14 +127,14 @@ pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 [thetas_pwr_on, ~] = Rag_fullIKP_rotate_x_ragnar(base_params_ik_, pose_pwr_on, h_all);
 
 % We do something similar for the two new arms.
-L_c5 = subs(C5,[x y z ph],[x_pwr_on y_pwr_on z_pwr_on phi_pwr_on]);
-L_c6 = subs(C6,[x y z ph],[x_pwr_on y_pwr_on z_pwr_on phi_pwr_on]);
-theta5_alt = L_c5-v5;
-theta6_alt = L_c6-v6;
-L_t5 = norm(theta5_alt);
-L_t6 = norm(theta6_alt);
-unit_vector_t5 = theta5_alt/L_t5;
-unit_vector_t6 = theta6_alt/L_t6;
+cc5 = subs(C5,[x y z ph],[x_pwr_on y_pwr_on z_pwr_on phi_pwr_on]);
+cc6 = subs(C6,[x y z ph],[x_pwr_on y_pwr_on z_pwr_on phi_pwr_on]);
+theta5 = cc5-v5;
+theta6 = cc6-v6;
+L_t5 = norm(theta5);
+L_t6 = norm(theta6);
+unit_vector_t5 = theta5/L_t5;
+unit_vector_t6 = theta6/L_t6;
 
 % We put all the equations into the matrices
 AMN=AMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),L_t5,L_t6,x_pwr_on,y_pwr_on,z_pwr_on);
@@ -171,12 +171,12 @@ plot3(A,B,C,'k-','LineWidth',3,'color','black')
 
 % Your two points
 P1 = v5';
-P2 = (theta5_alt+v5)';
+P2 = (theta5+v5)';
 pts = [P1; P2];
 plot3(pts(:,1), pts(:,2), pts(:,3),'k-','LineWidth',3,'color','blue')
 
 % Your two points
 P1 = v6';
-P2 = (theta6_alt+v6)';
+P2 = (theta6+v6)';
 pts = [P1; P2];
 plot3(pts(:,1), pts(:,2), pts(:,3),'k-','LineWidth',3,'color','red')
