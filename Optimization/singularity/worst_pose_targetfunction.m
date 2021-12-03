@@ -1,11 +1,7 @@
-function [Output]=CondMountValFunction_MultiObjective(V)
-v5 = [V(1);V(2);V(3)];
-v6 = [V(4);V(5);V(6)]; % 6 inputs
+function [Output]=CondMountValFunction_MultiObjective(pose_pwr_on)
+v5 = [-0.01; 0.0250; -0.01];
+v6 = [-0.01; -0.0250; -0.01];
 
-% Optimize for handoff position
-x_pwr_on = 0; y_pwr_on = 0.5; z_pwr_on = -0.4; phi_pwr_on = deg2rad(90);
-
-v5xf=0; v5yf=0.045; v5zf=-0.02; v6xf=0; v6yf=-0.045; v6zf=-0.02;
 geometric_parameters_ragnar; 
 
 Rx = @(angle) ([1 0 0; 0, cos(angle) -sin(angle); 0, sin(angle) cos(angle)]); 
@@ -119,7 +115,7 @@ AMNum=matlabFunction(AM); % Converts the expression to function handles
 
 % We now define a position that the robot is currently sitting in (its pose)
 
-pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
+pose_pwr_on = [pose_pwr_on(1); pose_pwr_on(2); pose_pwr_on(3); pose_pwr_on(4)];
 
 % get the initial position of thetas at power on
 % This is doing forward kinematics. This means that we input the pose of
@@ -127,13 +123,13 @@ pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 [thetas_pwr_on, ~] = Rag_fullIKP_rotate_x_ragnar(base_params_ik_, pose_pwr_on, h_all);
 
 JG5=jacobian((C5-v5),[x y z ph]);
-JG6=jacobian((C6-v5),[x y z ph]);
+JG6=jacobian((C6-v6),[x y z ph]);
 
 % We do something similar for the two new arms.
 C5Num=matlabFunction(C5); % Converts the expression to function handles
 C6Num=matlabFunction(C6); % Converts the expression to function handles
-L_c5=C5Num(phi_pwr_on,x_pwr_on,y_pwr_on,z_pwr_on);
-L_c6=C6Num(phi_pwr_on,x_pwr_on,y_pwr_on,z_pwr_on);
+L_c5=C5Num(pose_pwr_on(4),pose_pwr_on(1),pose_pwr_on(2),pose_pwr_on(3));
+L_c6=C6Num(pose_pwr_on(4),pose_pwr_on(1),pose_pwr_on(2),pose_pwr_on(3));
 theta5_alt = L_c5-v5;
 theta6_alt = L_c6-v6;
 L_t5 = norm(theta5_alt);
@@ -143,50 +139,14 @@ BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4;(C5-v5)'*JG5;(C6-v6)'*JG
 BMNum=matlabFunction(BM); % Converts the expression to function handles
 
 % We put all the equations into the matrices
-AMN=AMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),L_t5,L_t6,x_pwr_on,y_pwr_on,z_pwr_on);
+AMN=AMNum(pose_pwr_on(4),thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),L_t5,L_t6,pose_pwr_on(1),pose_pwr_on(2),pose_pwr_on(3));
 %AMN = vpa(AMN); % This makes AMN behave
 
-BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on);
+BMN=BMNum(pose_pwr_on(4),thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),pose_pwr_on(1),pose_pwr_on(2),pose_pwr_on(3));
 
 JN=pinv(BMN)*AMN;
 
-F1 = double(cond(JN));
+F1 = double(1/cond(JN));
 
-%% Objective function 2
-% We now define a position that the robot is currently sitting in (its pose)
-x_pwr_on = 0; y_pwr_on = 0; z_pwr_on = -0.6; phi_pwr_on = deg2rad(0);
-pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
-
-% get the initial position of thetas at power on
-% This is doing forward kinematics. This means that we input the pose of
-% the robot and recieve the motor angles.
-[thetas_pwr_on, ~] = Rag_fullIKP_rotate_x_ragnar(base_params_ik_, pose_pwr_on, h_all);
-
-JG5=jacobian((C5-v5),[x y z ph]);
-JG6=jacobian((C6-v5),[x y z ph]);
-
-% We do something similar for the two new arms.
-C5Num=matlabFunction(C5); % Converts the expression to function handles
-C6Num=matlabFunction(C6); % Converts the expression to function handles
-L_c5=C5Num(phi_pwr_on,x_pwr_on,y_pwr_on,z_pwr_on);
-L_c6=C6Num(phi_pwr_on,x_pwr_on,y_pwr_on,z_pwr_on);
-theta5_alt = L_c5-v5;
-theta6_alt = L_c6-v6;
-L_t5 = norm(theta5_alt);
-L_t6 = norm(theta6_alt);
-
-BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4;(C5-v5)'*JG5;(C6-v6)'*JG6];
-BMNum=matlabFunction(BM); % Converts the expression to function handles
-
-% We put all the equations into the matrices
-AMN=AMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),L_t5,L_t6,x_pwr_on,y_pwr_on,z_pwr_on);
-%AMN = vpa(AMN); % This makes AMN behave
-
-BMN=BMNum(phi_pwr_on,thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thetas_pwr_on(4),x_pwr_on,y_pwr_on,z_pwr_on);
-
-JN=pinv(BMN)*AMN;
-
-F2 = double(cond(JN));
-
-Output = [F1 F2]
+Output = [F1]
 end
