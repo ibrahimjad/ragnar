@@ -6,7 +6,7 @@ msg123 = [];
 meas([1:9])=0;
 deadline = 10;
 starttime = 0;
-period = 0.002;
+period = 0.003;
 
 ttCreatePeriodicTask('request_Task', starttime, period, 'request_Code');
 ttCreateTask('controller_task', deadline, 'controller_code', meas)

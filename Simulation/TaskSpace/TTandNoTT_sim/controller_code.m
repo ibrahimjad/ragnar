@@ -14,9 +14,9 @@ switch seg
     case 1 %% We received measurment
         
         msg = ttGetMsg; % sensor data (actuator position)
-        exectime = 0.0000125; % This runs 4 times for each sync frame.
+        exectime = 0.000050; % This runs 4 times for each sync frame.
         % total time to unpack 4 = 50 microsecs, so 12.5 micros for each
-        % moter measurement
+        % motor measurement
         
         if msg.state == TransmissionStatus.Send
             meas(msg.ActuatorNr) = msg.data(1);
@@ -28,7 +28,8 @@ switch seg
             ttSetNextSegment(5)
         end
     case 2
-        exectime = 0.00122; % calculate + send 4 control sig = 1220 millisecs
+        exectime = 0.001066+0.001; % calculate + send 4 control sig = 1220 microsecs
+                                    % 1220 - (256 - 51 - 51) = 1066
     case 3
      
         ControllerOut=F_mimo*(meas(1:8)-ref)';
