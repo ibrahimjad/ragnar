@@ -146,7 +146,7 @@ BMN=BMNum(pose_pwr_on(4),thetas_pwr_on(1),thetas_pwr_on(2),thetas_pwr_on(3),thet
 
 JN=pinv(BMN)*AMN;
 
-F1 = double(1/cond(JN));
+%F1 = double(1/cond(JN));
 
-Output = [F1]
+Output = cond(pinv(JN));
 end
