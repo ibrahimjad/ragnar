@@ -28,7 +28,7 @@ switch seg
             ttSetNextSegment(5)
         end
     case 2
-        exectime = 0.001066+0.001; % calculate + send 4 control sig = 1220 microsecs
+        exectime = 0.0010645+0.001;%-0.00005125; % calculate + send 4 control sig = 1220 microsecs
                                     % 1220 - (256 - 51 - 51) = 1066
     case 3
      
