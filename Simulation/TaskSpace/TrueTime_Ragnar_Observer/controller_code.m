@@ -31,7 +31,7 @@ switch seg
             meas(msg.ActuatorNr) = stepsCount * TSRes;
             meas(4+msg.ActuatorNr) = msg.data(2);
         end
-        disp(meas);
+        %disp(meas);
 
         meas(9) = meas(9) + 1;
         

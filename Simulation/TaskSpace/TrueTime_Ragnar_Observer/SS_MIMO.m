@@ -22,13 +22,13 @@ F_mimo=-place(A,B,Desired_poles) % State feedback
 L_mimo=-place(A',C',Desired_poles_obs)'; % Observer
 
 %% Ref signal
-sig1 = [0 0.5 -0.4023 deg2rad(90) 0 0 0 0];
+sig1 = [0.01 0.5 -0.4 deg2rad(90) 0 0 0 0];
 sig2 = [0.01 0.51 -0.4 deg2rad(90) 0 0 0 0];
 sig3 = [0.01 0.51 -0.39 deg2rad(90) 0 0 0 0];
-sig4 = [0.01 0.51 -0.39 deg2rad(95) 0 0 0 0];
-sig5 = [-0.01 0.49 -0.41 deg2rad(85) 0 0 0 0];
+sig4 = [0.01 0.51 -0.39 deg2rad(91) 0 0 0 0];
+sig5 = [-0.01 0.49 -0.41 deg2rad(89) 0 0 0 0];
 sig6 = [0 0.5 -0.4 deg2rad(90) 0 0 0 0];
-ref = [sig1;sig2; sig3; sig4; sig5; sig6];
+ref1 = [sig1;sig2; sig3; sig4; sig5; sig6];
 
 %%
 JN = [-0.20938225, -0.23075509, -0.0066385861, 0.0018545359, -0.044730209, 0.040108118
@@ -37,10 +37,10 @@ JN = [-0.20938225, -0.23075509, -0.0066385861, 0.0018545359, -0.044730209, 0.040
 0.061111646, -0.10516286,    0.80279105,  -0.78924007,   -12.634661,   6.4044305];
 res = [deg2rad(360)/1024 deg2rad(360)/1024 deg2rad(360)/1024 deg2rad(360)/1024 (1*10^-2)/1024 (1*10^-2)/1024]';
 TSRes = norm(JN*res);
-
-for i = 1:length(ref(:,1))
+ref=ref1;
+for i = 1:length(ref1(:,1))
     for j = 1:4
-        stepsCount = round(ref(i,j) / TSRes);
+        stepsCount = round(ref1(i,j) / TSRes);
         ref(i,j) = stepsCount * TSRes;
     end
     
