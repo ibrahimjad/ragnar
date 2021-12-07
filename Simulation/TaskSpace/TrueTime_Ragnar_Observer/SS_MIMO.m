@@ -47,4 +47,3 @@ ref = [sig1;sig1; sig3; sig4; sig5; sig6];
 % 
 % M = M_tilde*N;
 % 
-
