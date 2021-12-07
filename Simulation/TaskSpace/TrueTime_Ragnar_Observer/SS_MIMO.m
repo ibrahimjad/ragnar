@@ -22,28 +22,27 @@ F_mimo=-place(A,B,Desired_poles) % State feedback
 L_mimo=-place(A',C',Desired_poles_obs)'; % Observer
 
 %% Ref signal
-sig1 = [0 0.5 -0.4 deg2rad(90) 0 0 0 0];
+sig1 = [0 0.5 -0.4023 deg2rad(90) 0 0 0 0];
 sig2 = [0.01 0.51 -0.4 deg2rad(90) 0 0 0 0];
 sig3 = [0.01 0.51 -0.39 deg2rad(90) 0 0 0 0];
 sig4 = [0.01 0.51 -0.39 deg2rad(95) 0 0 0 0];
 sig5 = [-0.01 0.49 -0.41 deg2rad(85) 0 0 0 0];
 sig6 = [0 0.5 -0.4 deg2rad(90) 0 0 0 0];
+ref = [sig1;sig2; sig3; sig4; sig5; sig6];
 
-ref = [sig1;sig1; sig3; sig4; sig5; sig6];
-% %% Find N and M
-% Desired_zeroes = [-2:1/7:-1];
-% 
-% L = L_mimo;
-% F = F_mimo
-% Aza = A+B*F+L*C;
-% Cza = -F;
-% 
-% %M_tilde=-place(Aza',Cza',Desired_zeroes)';
-% 
-% Acl = [A B*F;-L*C Aza];
-% B_tilde_cl = [B;M_tilde];
-% Ccl = [C zeros(8,8)];
-% N = -pinv(Ccl*(Acl^-1)*B_tilde_cl);
-% 
-% M = M_tilde*N;
-% 
+%%
+JN = [-0.20938225, -0.23075509, -0.0066385861, 0.0018545359, -0.044730209, 0.040108118
+-0.10107797,  0.12024544,    0.10008853, -0.092520614,   0.87582034, -0.24672376
+ -0.2010277,  0.20910422,   0.079599813, -0.072758771,   0.21543337, -0.38709117
+0.061111646, -0.10516286,    0.80279105,  -0.78924007,   -12.634661,   6.4044305];
+res = [deg2rad(360)/1024 deg2rad(360)/1024 deg2rad(360)/1024 deg2rad(360)/1024 (1*10^-2)/1024 (1*10^-2)/1024]';
+TSRes = norm(JN*res);
+
+for i = 1:length(ref(:,1))
+    for j = 1:4
+        stepsCount = round(ref(i,j) / TSRes);
+        ref(i,j) = stepsCount * TSRes;
+    end
+    
+end
+

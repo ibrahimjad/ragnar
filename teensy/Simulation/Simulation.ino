@@ -52,11 +52,9 @@ void setup() {
   Canbus0.begin();
   delay(2000);
   timer.begin(SendSyncMessage, 1000);
-  /*
-    for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; i++) {
     motors[i]->Configure();
-    }
-  */
+  }
 }
 
 void Recv() {
@@ -86,7 +84,7 @@ void Calc() {
 
 void Send() {
   for (int i = 0; i < 4; i++) {
-    motors[i]->SetOutputTorquePDO(0);
+    motors[i]->SetOutputTorquePDO(0.2);
   }
 }
 
@@ -99,11 +97,15 @@ void loop() {
   Calc();
   Serial.print("Not Available: ");
   Serial.println(Canbus0.available());
-  Send();
+  //Send();
+  motors[0]->SetOutputTorquePDO(6);
+  motors[1]->SetOutputTorquePDO(-6);
+  motors[2]->SetOutputTorquePDO(-9);
+  motors[3]->SetOutputTorquePDO(9);
   Serial.print("Not Available: ");
   Serial.println(Canbus0.available());
   if (receive) {
-    SendSyncMessage(); 
+    SendSyncMessage();
     receive = false;
   }
   Serial.print("Not Available: ");

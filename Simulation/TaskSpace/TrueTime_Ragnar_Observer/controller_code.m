@@ -12,6 +12,14 @@ F_mimo =[-95.1662         0         0         0  -24.6981         0         0   
 
 switch seg
     case 1 %% We received measurment
+        %%
+        JN = [-0.20938225, -0.23075509, -0.0066385861, 0.0018545359, -0.044730209, 0.040108118
+        -0.10107797,  0.12024544,    0.10008853, -0.092520614,   0.87582034, -0.24672376
+         -0.2010277,  0.20910422,   0.079599813, -0.072758771,   0.21543337, -0.38709117
+        0.061111646, -0.10516286,    0.80279105,  -0.78924007,   -12.634661,   6.4044305];
+        res = [deg2rad(360)/1024 deg2rad(360)/1024 deg2rad(360)/1024 deg2rad(360)/1024 (1*10^-2)/1024 (1*10^-2)/1024]';
+        TSRes = norm(JN*res);
+
         
         msg = ttGetMsg; % sensor data (actuator position)
         exectime = 0.000050; % This runs 4 times for each sync frame.
@@ -19,7 +27,8 @@ switch seg
         % motor measurement
         
         if msg.state == TransmissionStatus.Send
-            meas(msg.ActuatorNr) = msg.data(1);
+            stepsCount = round(msg.data(1) / TSRes);
+            meas(msg.ActuatorNr) = stepsCount * TSRes;
             meas(4+msg.ActuatorNr) = msg.data(2);
         end
         disp(meas);
@@ -46,7 +55,7 @@ switch seg
 
         for i = 1:4
             msg.data=ttAnalogIn(i);
-            disp("Sent to node" + num2str(i) + ": " + msg.data);
+            %disp("Sent to node" + num2str(i) + ": " + msg.data);
             ttSendMsg(i+1, msg, 80);
         end
        

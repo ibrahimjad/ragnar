@@ -116,7 +116,7 @@ AMNum=matlabFunction(AM); % Converts the expression to function handles
 BMNum=matlabFunction(BM); % Converts the expression to function handles
 
 % We now define a position that the robot is currently sitting in (its pose)
-x_pwr_on = 0.; y_pwr_on = 0.2; z_pwr_on = -0.4; phi_pwr_on = deg2rad(90);
+x_pwr_on = 0.; y_pwr_on = 0.5; z_pwr_on = -0.4; phi_pwr_on = deg2rad(90);
 pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 
 % get the initial position of thetas at power on
