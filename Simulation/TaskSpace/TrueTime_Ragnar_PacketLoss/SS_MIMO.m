@@ -10,7 +10,7 @@ sys_mimo=ss(A,B,C,0);
 %% Disigning feedback and observer gain
 S=-(sqrt(250/1.28));
 
-Xpole = roots([1.28 2*sqrt(251*1.28) 251]);
+Xpole = roots([1.28 2*sqrt(250*1.28) 250]);
 Ypole = roots([1.28 2*sqrt(250*1.28) 250]);
 Zpole = roots([1.28 2*sqrt(250*1.28) 250]);
 Phipole = roots([0.0053 2*sqrt(2.50*0.0053*0.06) 2.50*0.06]);
