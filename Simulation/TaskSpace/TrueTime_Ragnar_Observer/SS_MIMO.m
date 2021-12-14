@@ -18,7 +18,8 @@ Phipole = roots([0.0053 2*sqrt(2.50*0.0053*0.06) 2.50*0.06]);
 Desired_poles = real([Xpole' Zpole' Ypole' Phipole']);
 Desired_poles_obs = 5*Desired_poles;
 
-F_mimo=-place(A,B,Desired_poles) % State feedback
+[F_mimo,prec,message]= place(A,B,Desired_poles) % State feedback
+F_mimo=-F_mimo;
 L_mimo=-place(A',C',Desired_poles_obs)'; % Observer
 
 %% Ref signal
