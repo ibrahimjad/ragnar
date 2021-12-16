@@ -109,7 +109,7 @@ AM = [AM,repmat(0,[4,2])];
 AM = [AM;repmat(0,[2,6])];
 AM(5,5) = thet5;
 AM(6,6) = thet6;
-BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4;(C5-v5)'*JG5;(C6-v6)'*JG6];
+BM=[(B1-C1)'*JG1;(B2-C2)'*JG2;(B3-C3)'*JG3;(B4-C4)'*JG4;(v5-C5)'*JG5;(v6-C6)'*JG6];
 
 %%
 AMNum=matlabFunction(AM); % Converts the expression to function handles

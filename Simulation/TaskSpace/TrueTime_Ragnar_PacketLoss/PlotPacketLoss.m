@@ -8,10 +8,10 @@ NPzT = out.z.Time;
 NPphiT = out.phi.Time;
 
 %%
-plb = 0.7;
-ple = 0.9;
+plb = 0.4;
+ple = 0.6;
 
-w = 9; h=3; lw = 1.5; rlw = 1.8;
+w = 9*1.35; h=3*1.35; lw = 1.45; rlw = 1.8;
 
 P1 = plot(NPxT,NPx,'b',out.x.Time,out.x.Data(:,2),'r--',out.x.Time,out.x.Data(:,1),'k:');
 set(P1,'linewidth',lw);
@@ -22,7 +22,7 @@ ylim([-0.011 0.011]);
 %y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
 x = xline(plb,'-.','color',[0.8 0.5 0.9],'LineWidth',1.2);
 x2 = xline(ple,'-.','color',[0.4 0.5 0.7],'LineWidth',1.2);
-legend('Observer','No observer','Reference','Packet loss start','Packet loss stop','Location','southwest');
+legend('Observer','No observer','Reference','Packet loss start','Packet loss stop','Location','northeast');
 set(gcf, 'PaperPosition', [-0.45 +0.05 w h]); %Position plot at left hand corner with width and height.
 set(gcf, 'PaperSize', [w-1.20 h-0.1]); %Set the paper to have width and height.
 saveas(gcf, 'Packetx', 'pdf'); %Save figure
@@ -36,7 +36,12 @@ ylim([0.489 0.511]);
 %y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
 x = xline(plb,'-.','color',[0.8 0.5 0.9],'LineWidth',1.2);
 x2 = xline(ple,'-.','color',[0.4 0.5 0.7],'LineWidth',1.2);
-legend('Observer','No observer','Reference','Packet loss start','Packet loss stop','Location','southwest');
+legend('Observer','No observer','Reference','Packet loss start','Packet loss stop','Location','northeast'),set(legend,'fontsize',9.1);
+%[hh,icons,plots,txt] = 
+% p1 = icons(1).Position;
+% icons(1).Position = [0.2 p1(2) 0];
+% %icons(2).XData = [0.05 0.2];
+
 set(gcf, 'PaperPosition', [-0.45 +0.05 w h]); %Position plot at left hand corner with width and height.
 set(gcf, 'PaperSize', [w-1.20 h-0.1]); %Set the paper to have width and height.
 saveas(gcf, 'Packety', 'pdf'); %Save figure

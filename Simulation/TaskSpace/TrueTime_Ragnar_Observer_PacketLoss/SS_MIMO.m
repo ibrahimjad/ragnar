@@ -29,5 +29,5 @@ sig4 = [0.01 0.51 -0.39 deg2rad(95) 0 0 0 0];
 sig5 = [-0.01 0.49 -0.41 deg2rad(85) 0 0 0 0];
 sig6 = [0 0.5 -0.4 deg2rad(90) 0 0 0 0];
 
-ref = [sig4;sig5;sig5;];
+ref = [sig4;sig5;sig5;sig5;sig5;sig5;sig5;sig5;sig5;sig5;sig5;sig5;sig5;sig5;];
 
