@@ -8,10 +8,10 @@ NPzTv = out.z1.Time;
 NPphiTv = out.phi1.Time;
 
 %%
-plb = 0.7;
-ple = 0.9;
+plb = 0.4;
+ple = 0.6;
 
-w = 9; h=3; lw = 1.5; rlw = 1.8;
+w = 9*1.35; h=3*1.35; lw = 1.5; rlw = 1.8;
 
 P1 = plot(NPxTv,NPxv,'b',out.x1.Time,out.x1.Data(:,1),'r--');
 set(P1,'linewidth',lw);
@@ -22,7 +22,7 @@ ylim([-0.07 0.01]);
 %y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
 x = xline(plb,'-.','color',[0.8 0.5 0.9],'LineWidth',1.2);
 x2 = xline(ple,'-.','color',[0.4 0.5 0.7],'LineWidth',1.2);
-legend('Observer','No observer','Packet loss start','Packet loss stop','Location','southwest');
+%legend('Observer','No observer','Packet loss start','Packet loss stop','Location','southwest');
 set(gcf, 'PaperPosition', [-0.45 +0.05 w h]); %Position plot at left hand corner with width and height.
 set(gcf, 'PaperSize', [w-1.20 h-0.1]); %Set the paper to have width and height.
 saveas(gcf, 'PacketxVel', 'pdf'); %Save figure
@@ -36,7 +36,7 @@ ylim([-0.12 0.05]);
 %y = yline(0,'-.','color',[0.5 0.5 0.5],'LineWidth',1.2);
 x = xline(plb,'-.','color',[0.8 0.5 0.9],'LineWidth',1.2);
 x2 = xline(ple,'-.','color',[0.4 0.5 0.7],'LineWidth',1.2);
-legend('Observer','No observer','Packet loss start','Packet loss stop','Location','southwest');
+%legend('Observer','No observer','Packet loss start','Packet loss stop','Location','southwest');
 set(gcf, 'PaperPosition', [-0.45 +0.05 w h]); %Position plot at left hand corner with width and height.
 set(gcf, 'PaperSize', [w-1.20 h-0.1]); %Set the paper to have width and height.
 saveas(gcf, 'PacketyVel', 'pdf'); %Save figure

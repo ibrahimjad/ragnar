@@ -51,11 +51,11 @@ w = 12; h=4; lw = 1.5;
 figure(1)
 P1 = plot(0:2.5/250:2.50,JacobianCond);
 set(P1,'linewidth',lw);
-ylabel('condition number []');
+ylabel('Condition number [-]');
 xlabel('Time [sec]');
-title('Condition number for jacobian')
-set(gcf, 'PaperPosition', [-1 0.01 w h]); %Position plot at left hand corner with width and height.
-set(gcf, 'PaperSize', [w-1.8 h]); %Set the paper to have width and height.
+title('Condition number for Jacobian')
+set(gcf, 'PaperPosition', [-0.7 0.01 w h]); %Position plot at left hand corner with width and height.
+set(gcf, 'PaperSize', [w-1.6 h]); %Set the paper to have width and height.
 saveas(gcf, 'SigularatyCondCheck', 'pdf'); %Save figure
 
 
