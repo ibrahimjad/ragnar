@@ -133,9 +133,9 @@ draw_ragnar_rotated(thetas_pwr_on,base_params_ik_,pose_pwr_on, h_all)
 
 %% Draw ragnar in pickup
 x_pwr_on = 0.0; 
-y_pwr_on = 0; 
-z_pwr_on = -0.60; 
-phi_pwr_on = deg2rad(0);
+y_pwr_on = 0.2; 
+z_pwr_on = -0.40; 
+phi_pwr_on = 1.5;%deg2rad(0);
 
 pose_pwr_on = [x_pwr_on; y_pwr_on; z_pwr_on; phi_pwr_on];
 % get the initial position of thetas at power on

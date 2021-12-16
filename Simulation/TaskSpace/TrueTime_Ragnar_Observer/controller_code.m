@@ -27,6 +27,8 @@ switch seg
         % motor measurement
         
         if msg.state == TransmissionStatus.Send
+%             meas(msg.ActuatorNr) = msg.data(1);
+%             meas(4+msg.ActuatorNr) = msg.data(2);
             stepsCount = round(msg.data(1) / TSRes);
             meas(msg.ActuatorNr) = stepsCount * TSRes;
             meas(4+msg.ActuatorNr) = msg.data(2);
