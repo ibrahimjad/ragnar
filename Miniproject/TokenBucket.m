@@ -14,17 +14,19 @@ classdef TokenBucket < handle
     end
     methods
         function bucket = TokenBucket(Tn, M, L, Q, Tau, start_now)
-            if nargin == 6
-                bucket.Tn = (Tn >= M) * M + (Tn < M) * Tn;
-                bucket.M = M;
-                bucket.L = L;
-                bucket.Q = Q;
-                bucket.Tau = Tau;
-                bucket.tm = timer('ExecutionMode', 'fixedRate', 'Period', bucket.Tau);
-                bucket.tm.TimerFcn = {@bucket.ReplinishToken, bucket};
-                bucket.tm.StartDelay = ~start_now * bucket.Tau;
-                start(bucket.tm);
+            if nargin ~= 6
+                disp('Missing argument')
+                return
             end
+            bucket.Tn = (Tn >= M) * M + (Tn < M) * Tn;
+            bucket.M = M;
+            bucket.L = L;
+            bucket.Q = Q;
+            bucket.Tau = Tau;
+            bucket.tm = timer('ExecutionMode', 'fixedRate', 'Period', bucket.Tau);
+            bucket.tm.TimerFcn = {@bucket.ReplinishToken, bucket};
+            bucket.tm.StartDelay = ~start_now * bucket.Tau;
+            start(bucket.tm);
         end
         function delete(bucket)
             stop(bucket.tm);
