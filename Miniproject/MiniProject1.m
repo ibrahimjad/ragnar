@@ -29,9 +29,9 @@ legend('Network','Mean network arrival')
 
 %% 2.4 rtccurve([[0 startY 0];[skiftvedtid skift_til 0]], 0, skift_igen, skiftilstarty+værdi);
 f_tokenbucketoutput1 = rtccurve([[0 10 105];[40 1400*3 35]]);
-f_tokenbucketoutput2 = rtccurve([[0 0 105];[40 35 0]], 0, 40, 4000);
+%f_tokenbucketoutput2 = rtccurve([[0 0 105];[40 35 0]], 0, 40, 4000);
 figure(2)
-rtcplot(f_network,f_tokenbucketoutput1,f_tokenbucketoutput2,100)
+rtcplot(f_network,f_tokenbucketoutput1,100)
 grid on
 xlabel('Time [ms]')
 ylabel(' Bytes [Bytes]')
@@ -39,11 +39,7 @@ title('Token bucket output')
 legend('Network','Output of one token bucket')
 
 %%
-% 2.5 token bucket arrivel curves 
-% Sloap when full of tokens.
-a1 = (400000-352)/(40) %[B p ms]
-
-% Sloap when no tokans
-a2 = (1400)/(20*10^-3) %[B p ms]
-
-
+% 2.5 Backlog
+Inputflow = poissrnd(40,1,25)
+figure(3)
+rtcplot(f_tokenbucketoutput1,100)
