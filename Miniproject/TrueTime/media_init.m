@@ -5,4 +5,4 @@ deadline = 10;
 starttime = 0;
 period = 0.04;
 
-ttCreatePeriodicTask('media_Task', starttime, period, 'media_code');
+%bucket_media = TokenBucket(1,3,3,0,0.04,false);
