@@ -4,10 +4,10 @@ classdef TokenBucket < handle
         M {mustBeNumeric}
         L {mustBeNumeric}
         Q {mustBeNumeric}
-        Tau {mustBeNumeric}
+        Fcn
     end
     methods
-        function bucket = TokenBucket(Tn, M, L, Q, Tau)
+        function bucket = TokenBucket(Tn, M, L, Q, Fcn)
             if nargin ~= 5
                 disp('Missing argument')
                 return
@@ -16,20 +16,20 @@ classdef TokenBucket < handle
             bucket.M = M;
             bucket.L = L;
             bucket.Q = Q;
-            bucket.Tau = Tau;
+            bucket.Fcn = Fcn;
         end
         function Arrive(bucket)
             if (bucket.Tn > 0)
                 bucket.Tn = bucket.Tn - 1;
-                % serve
+                bucket.Fcn();
             elseif (bucket.Tn == 0 && bucket.Q < bucket.L)
                 bucket.Q = bucket.Q + 1;
             end
         end
-        function ReplinishToken(bucket, varargin)
+        function ReplinishToken(bucket)
             if (bucket.Q > 0)
                 bucket.Q = bucket.Q -1;
-                % serve
+                bucket.Fcn();
             elseif (bucket.Q == 0 && bucket.Tn < bucket.M)
                 bucket.Tn = bucket.Tn + 1;
             end
