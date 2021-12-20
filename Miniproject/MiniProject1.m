@@ -28,11 +28,11 @@ legend('Network','Mean network arrival')
 % xlabel('Time beteen packets [ms]')
 % ylabel('Probability')
 
-%% 2.4 rtccurve([[0 startY 0];[skiftvedtid skift_til 0]], 0, skift_igen, skiftilstarty+værdi);
-f_tokenbucketoutput1 = rtccurve([[0 10 105];[40 1400*3 35]]);
-%f_tokenbucketoutput2 = rtccurve([[0 0 105];[40 35 0]], 0, 40, 4000);
-figure(2)
-rtcplot(f_network,f_tokenbucketoutput1,100)
+% %% 2.4 rtccurve([[0 startY 0];[skiftvedtid skift_til 0]], 0, skift_igen, skiftilstarty+værdi);
+% f_tokenbucketoutput1 = rtccurve([[0 10 105];[40 1400*3 35]]);
+% %f_tokenbucketoutput2 = rtccurve([[0 0 105];[40 35 0]], 0, 40, 4000);
+% figure(2)
+% rtcplot(f_network,f_tokenbucketoutput1,100)
 
 %% 2.4 
 time = 200;
@@ -60,11 +60,14 @@ legend(legenden)
 
 % 2.5 token bucket arrivel curves 
 % Sloap when full of tokens.
-f_arrival = rtccurve([[0 1400*6 0]], [[0 1400 0];[20 1400 0]], 40, 1400*6, 40, 1400)
-rtcplot(f_arrival,time); legenden(end+1)="Arrival to token bucket"; legend(legenden);
-backlog = rtcplotv(f_arrival,f_tokenbucketoutput)
-legenden(end+1)="Max backlog"; legend(legenden);
-delay = rtcploth(f_arrival,f_tokenbucketoutput)
-legenden(end+1)="Max delay"; legend(legenden);
-
-
+% f_arrival = rtccurve([[0 1400*6 0]], [[0 1400 0];[20 1400 0]], 40, 1400*6, 40, 1400)
+% rtcplot(f_arrival,time); legenden(end+1)="Arrival to token bucket"; legend(legenden);
+% backlog = rtcplotv(f_arrival,f_tokenbucketoutput)
+% legenden(end+1)="Max backlog"; legend(legenden);
+% delay = rtcploth(f_arrival,f_tokenbucketoutput)
+% legenden(end+1)="Max delay"; legend(legenden);
+figure(3)
+P3 = figure(3)
+f_mmrc = rtccurve([[0 1400*3 0];[ 40 1400*0 0]], [[0 1400 0];[11.2 1400 0]], 35, 1400*3, 35, 1400);
+all_combined = rtcplus(rtcplus(rtcplus(f_mmrc,f_mmrc),f_wheels),f_ESP);
+rtcplot(f_network,all_combined,300)
