@@ -10,7 +10,7 @@ f = rtccurve([0 0 0],0,1,100*N)
 g = rtccurve([0 0 0],0,4,500*N)
 
 rtcplot(f,g,bw,20)
-
+legend('Arrival curve','Service curve for N sensors','Bandwidth')
 delay = rtch(f,g)
 backlog = rtcv(f,g)
 rtcploth(f,g)
