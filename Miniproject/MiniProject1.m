@@ -10,7 +10,8 @@ f_ESP = rtccurve([0 0 0],0,10,8)
 f_network = rtccurve([[0 0 1000/8]])
 f_MM = rtccurve([0 0 0],0,40,1400)
 f_RC = rtccurve([0 0 0],0,40,1400)
-f_combined = rtcplus(rtccurve([0 0 0],0,40,1400+1400),rtccurve([0 0 0],0,10,(20*4*4)+(8*4)))
+f_combined = rtcplus(rtccurve([0 0 0],0,40,1400+1400),rtccurve([0 0 0],0,10,(20*4)+8))
+%f_comb1ned = rtcplus(rtcplus(f_wheels,f_ESP),rtcplus(f_MM,f_RC))
 
 figure(1)
 rtcplot(f_network,f_combined,200);%ylim([0 6000]);
@@ -54,10 +55,10 @@ legend(legenden)
 %%
 
 % 2.5 Backlog
-%Inputflow = poissrnd(40,1,25)
-%figure(3)
-%rtcplot(f_tokenbucketoutput1,100)
-
+% Inputflow = poissrnd(40,1,25)
+% figure(3)
+% rtcplot(f_tokenbucketoutput1,100)
+% 
 % 2.5 token bucket arrivel curves 
 % Sloap when full of tokens.
 % f_arrival = rtccurve([[0 1400*6 0]], [[0 1400 0];[20 1400 0]], 40, 1400*6, 40, 1400)
